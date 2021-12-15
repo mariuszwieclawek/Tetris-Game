@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <iostream>
-
-int score = 0;
+#include <string>
+#include <sstream>
 
 const char X = 20;
 const char Y = 11;
@@ -23,14 +23,14 @@ struct Point
 	int x, y;
 } Point_position[4], Point_pos_temp[4], Point_next_figure[4];
 
-int game_field[X][Y] = { 0 };
+int game_area[X][Y] = { 0 };
 
 
-bool point_in_field()
+bool point_in_area()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (game_field[Point_position[i].y][Point_position[i].x] > 0) // kiedy zetknie siê z inna figura
+		if (game_area[Point_position[i].y][Point_position[i].x]) // kiedy zetknie siê z inna figura
 			return 1;
 		else if (Point_position[i].y > (X - 1)) // kiedy figura zejdzie na sam dó³
 			return 1;
@@ -40,12 +40,11 @@ bool point_in_field()
 }
 
 
-
 bool end_game_check()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (Point_position[i].y == 0 && (game_field[Point_position[i].y][Point_position[i].x] > 0)) // kiedy bedzie figura bedzie u samej gory i zetknie sie z inna figura
+		if (Point_position[i].y == 0 && (game_area[Point_position[i].y][Point_position[i].x] > 0)) // kiedy bedzie figura bedzie u samej gory i zetknie sie z inna figura
 			return 1;
 	}
 	return 0;
@@ -56,7 +55,9 @@ bool move_check()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (Point_position[i].x < 0 || Point_position[i].x > 10) // czy punkt znajduje sie w obszarze gry
+		if (Point_position[i].x < 0 || Point_position[i].x > 10) //gdy punkt wyjdzie poza obszar gry
+			return 1;
+		else if (game_area[Point_position[i].y][Point_position[i].x]) // kiedy zetknie siê z inna figura
 			return 1;
 	}
 	return 0;
@@ -69,8 +70,6 @@ bool rotation_check()
 	{
 		if (Point_pos_temp[i].x < 0 || Point_pos_temp[i].x > 10) //gdy punkt wyjdzie poza obszar gry
 			return 0;
-		//else if (Point_pos_temp[i].x) // gdy figura jest kwadratem
-			//return 0;
 	}
 	return 1;
 }
@@ -78,44 +77,67 @@ bool rotation_check()
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(480, 396), "Tetris game");
-
-	sf::Texture tex1, tex2, tex3;
-	tex1.loadFromFile("images/colors.png");
-	tex2.loadFromFile("images/tetrisbackground.png");
-
-	sf::Sprite spr1, spr2, spr3;
-	spr1.setTexture(tex1);
-	spr2.setTexture(tex2);
-	spr3.setTexture(tex3);
-
 	bool rotate = 0; // do obracania figura
 	int x_position = 0; // do sterowania strzalkami 
 	int color = 0; //wylosowany kolor dla figury
 	int next_color = 0; //wylosowany kolor dla nastepnej figury
 	int row; // wylosowany wiersz figury
 	int end_game = 0; // konczy gre
-	
-	srand(time(NULL));
+	int score = 0; // Aktualny wynik
+	int best_score = 0; // Najlepszy wynik
+	float timer = 0; //do zliczania czasu
+	double delay = 0.3; //szybkosc opadania
+
+	sf::RenderWindow window(sf::VideoMode(460, 396), "Tetris game");
+
+	sf::Texture tex1, tex2;
+	tex1.loadFromFile("images/colors.png");
+	tex2.loadFromFile("images/tetrisbackground.png");
+
+	sf::Sprite spr1, spr2;
+	spr1.setTexture(tex1);
+	spr2.setTexture(tex2);
+
+	sf::Event eve; 
 
 	sf::Clock clock;
-	float timer = 0, delay = 0.3;
 
-	spr1.setTextureRect(sf::IntRect(color * 18, 0, 18, 18)); // wycina jeden kwadrat z calej tekstury (losowy kolor)
+	sf::Font font;
+	font.loadFromFile("fonts/FT_BetonBold.otf");
+		
+	sf::Text text; 
+	text.setFont(font); 
 
-	sf::Font font; // obiekt do czcionki
-	if (!font.loadFromFile("fonts/FT_BetonBold.otf"))
-		std::cout << "cannot load fonts" << std::endl;
-	sf::Text text; //obiekt do tekstu 
-	text.setFont(font); // ustawiamy czcionke ktora wczytalismy
-
+	/********************  FIRST RANDOM FIGURE  ********************/
+	
+	color = 1 + rand() % 7; // rand color
+	row = rand() % 7; // rand row
+	for (int i = 0; i < 4; i++)
+	{
+		Point_position[i].x = figures[row][i] % 2; // kolumna 0 czy 1
+		Point_position[i].y = figures[row][i] / 2;
+	}
+	
+	next_color = 1 + rand() % 7; // rand color
+	row = rand() % 7; // rand row
+	for (int i = 0; i < 4; i++)
+	{
+		Point_next_figure[i].x = figures[row][i] % 2; // kolumna 0 czy 1
+		Point_next_figure[i].y = figures[row][i] / 2;
+	}
+	
+	/*******************************************************************************/
+	/******************				   MAIN LOOP	 			 *******************/
+	/*******************************************************************************/
 	while (window.isOpen())
 	{
+		srand(time(NULL));
 		float time = clock.getElapsedTime().asSeconds(); // zwraca czas w sekundach od ostatniego momentu uzycia clock.restart()
 		clock.restart();
 		timer += time;
 
-		sf::Event eve;
+
+		/**********  EVENT DETECTION  **********/
 		while (window.pollEvent(eve))
 		{
 			if (eve.type == sf::Event::Closed)
@@ -125,6 +147,7 @@ int main()
 				if (eve.key.code == sf::Keyboard::Up) rotate = true;
 				else if (eve.key.code == sf::Keyboard::Right) x_position = 1;
 				else if (eve.key.code == sf::Keyboard::Left) x_position = -1;
+				else if (eve.key.code == sf::Keyboard::Escape) window.close();
 			}
 
 		}
@@ -139,10 +162,7 @@ int main()
 			for (int j = 0; j < 4; j++) Point_position[j] = Point_pos_temp[j];
 
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) delay = 0.05;
-
 		/**********  ^ ROTATION ^  **********/
-
 		if (rotate)
 		{
 			for (int j = 0; j < 4; j++) Point_pos_temp[j] = Point_position[j]; // copy
@@ -164,6 +184,8 @@ int main()
 		}
 
 		/**********  v FASTER FALLING v  **********/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) delay = 0.05;
+
 		if (timer > delay)
 		{
 			for (int i = 0; i < 4; i++)
@@ -183,41 +205,53 @@ int main()
 
 			for (int j = 0; j < Y; j++)
 			{
-				if (game_field[i][j] == 0) // jezeli nie ma klocka to wyjdz z wiersza i nie zliczaj
+				if (game_area[i][j] == 0) // jezeli nie ma klocka to wyjdz z wiersza i nie zliczaj
 					break;
 				temp++;
 			}
 			
 			if (temp == Y) // jesli 11 klockow w jednej linii bylo to usun wartosci z tego wiersza
 			{
-				score++; // aktualnt wynik
+				score++; // aktualny wynik
 				row_temp = i; // zapisujemy wartosc wiersza w ktorym jest kompletna linia
 				for (int k = 0; k < Y; k++)
-					game_field[row_temp][k] = 0; // usuwamy z niej wartosci
+					game_area[row_temp][k] = 0; // usuwamy z niej wartosci
 
 				for (int k = row_temp; k > 4; k--) // cala tablice wartosci liczac w gore od wiersza ktorego usunelismy przesuwamy o jedna pozycje 
 				{
 					for (int j = 0; j < Y; j++)
-						game_field[k][j] = game_field[k - 1][j];
+						game_area[k][j] = game_area[k - 1][j];
 				}
 			}		
 		}
 		
 
-		/**********  __ END OF GAME MOMENT __  **********/
+		/**********   END OF GAME MOMENT   **********/
 		if (end_game_check())
-			end_game = 1;
-
-		if (end_game == 1)
 		{
 			while (1)
 			{
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+				text.setCharacterSize(30);
+				text.setFillColor(sf::Color::Red);
+				text.setPosition(280, 300);
+				text.setString("GAME OVER !");
+				window.draw(text);
+				text.setCharacterSize(20);
+				text.setPosition(300, 330);
+				text.setString("press space");
+				window.draw(text);
+				window.display();
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) // kiedy klikniemy escape zamykamy okno
+					window.close();
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) // kiedy klikniemy spacje nowa gra
 				{
 					for (int i = 0; i < X; i++)
 						for (int j = 0; j < Y; j++)
-							game_field[i][j] = 0;		// czyscimy zawartosc obszaru gry
+							game_area[i][j] = 0;		// czyscimy zawartosc obszaru gry
 					end_game = 0;
+					if (score > best_score) // sprawdzamy czy to najlepszy wynik
+						best_score = score;
+					score = 0;
 					break;
 				}
 			}
@@ -225,23 +259,24 @@ int main()
 
 
 
-		////
-		if (point_in_field())
+		/**********   CREATE RANDOM FIGURE  **********/
+		if (point_in_area())
 		{
 			for (int i = 0; i < 4; i++)
 			{
-				game_field[Point_pos_temp[i].y][Point_pos_temp[i].x] = color;
+				game_area[Point_pos_temp[i].y][Point_pos_temp[i].x] = color;
 			}
 
-			color = 1 + rand() % 7; // losowa liczba 1-7 bo tylko mamy dostepnych kolorow
+			color = next_color; // losowa liczba 1-7 bo tylko mamy dostepnych kolorow
+			next_color = 1 + rand() % 7; // losowy kolor dla nastepnej wyswietlanej figury
+
 			row = rand() % 7; // losowa liczba 0-6 bo tyle mamy wierszy w macierzy figur
 			for (int i = 0; i < 4; i++)
 			{
-				Point_position[i].x = figures[row][i] % 2; // kolumna 0 czy 1
-				Point_position[i].y = figures[row][i] / 2;
+				Point_position[i].x = Point_next_figure[i].x; // kolumna 0 czy 1
+				Point_position[i].y = Point_next_figure[i].y;
 			}
 
-			next_color = 1 + rand() % 7; // losowy kolor dla nastepnej wyswietlanej figury
 			row = rand() % 7; // losowa liczba 0-6 bo tyle mamy wierszy w macierzy figur
 			for (int i = 0; i < 4; i++)
 			{
@@ -251,33 +286,38 @@ int main()
 		}
 
 
+
+
+		/*******************************************************************************/
+		/******************				 DISPLAY DRAW	 			 *******************/
+		/*******************************************************************************/
+
 		window.clear(sf::Color::Black);
 		window.draw(spr2); // background
 
-		/**********  __ DRAW ACTUALLY FIGURE __  **********/
+		/**********   DRAW ACTUALLY FIGURE   **********/
 		for (int i = 0; i < 4; i++)
 		{
 			spr1.setTextureRect(sf::IntRect(color * 18, 0, 18, 18));
 			spr1.setPosition(Point_position[i].x * 18, Point_position[i].y * 18);
 			spr1.move(18, 18); // przesuwanie obiektu wzglêdem jego aktualnej pozycji x // zeby dopasowac do tla
 			window.draw(spr1);
-		}
+		}	
 
-
-		/**********  __ DRAW ALL FIGURE __  **********/
+		/**********   DRAW ALL FIGURE   **********/
 		for (int i = 0; i < X; i++)
 		{
 			for (int j = 0; j < Y; j++)
 			{
-				if (game_field[i][j] == 0) continue; // kiedy niewypelnilismy pola zadna figura to pomin
-				spr1.setTextureRect(sf::IntRect(game_field[i][j] * 18, 0, 18, 18)); // wycina kawalek z calej tekstury 
+				if (game_area[i][j] == 0) continue; // kiedy niewypelnilismy pola zadna figura to pomin
+				spr1.setTextureRect(sf::IntRect(game_area[i][j] * 18, 0, 18, 18)); // wycina kawalek z calej tekstury 
 				spr1.setPosition(j * 18, i * 18); // sprajt zostanie umieszczony na pozycji x,y
 				spr1.move(18, 18); // przesuwanie obiektu wzglêdem jego aktualnej pozycji x // zeby dopasowac do tla
 				window.draw(spr1);
 			}
 		}
 
-		/**********  __ DRAW NEXT FIGURE __  **********/
+		/**********   DRAW NEXT FIGURE   **********/
 		
 			for (int i = 0; i < 4; i++)
 			{
@@ -287,15 +327,36 @@ int main()
 				window.draw(spr1);
 			}
 		
-		/**********  __ DRAW SCORE __  **********/
-		text.setString("YOUR SCORE:");
-		text.setCharacterSize(30); 
+		/**********   DRAW SCORE etc  **********/
+	
+		std::stringstream ss1,ss2;
+		ss1 << score;
+		ss2 << best_score;
+		std::string str1 = ss1.str();
+		std::string str2 = ss2.str();
+
+		text.setCharacterSize(30);
 		text.setFillColor(sf::Color::White);
+		text.setPosition(280, 180);
+		text.setString("YOUR SCORE:");
+		window.draw(text);
+		text.setPosition(340, 210);
+		text.setString(str1);
+		window.draw(text);
+		text.setPosition(280, 240);
+		text.setString("BEST SCORE:");
+		window.draw(text);
+		text.setPosition(340, 270);
+		text.setString(str2);
+		window.draw(text);
+
+		text.setCharacterSize(15);
+		text.setPosition(295, 360);
+		text.setString("press ESC to exit");
 		window.draw(text);
 
 
-
-		/**********  __ DISPLAY ALL AND RESET VARIABLES __  **********/
+		/**********   DISPLAY ALL AND RESET VARIABLES   **********/
 		window.display();
 		x_position = 0; // musimy wyzerowac wartosc kiedy juz ustawilismy pozycje sprite 
 		delay = 0.3; // powrot do standardowego czasu opadania

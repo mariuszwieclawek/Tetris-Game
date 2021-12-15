@@ -1,12 +1,9 @@
 ﻿  main.cpp
-C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Tetris\main.cpp(99,12): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Tetris\main.cpp(102,30): warning C4305: "inicjowanie": obcięcie z "double" do "float"
-C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Tetris\main.cpp(142,67): warning C4305: "=": obcięcie z "double" do "float"
-C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Tetris\main.cpp(261,67): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Tetris\main.cpp(261,41): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Tetris\main.cpp(274,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Tetris\main.cpp(274,24): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Tetris\main.cpp(285,74): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Tetris\main.cpp(285,45): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Tetris\main.cpp(301,14): warning C4305: "=": obcięcie z "double" do "float"
-  Tetris.vcxproj -> C:\Users\Mariusz\Desktop\5 semestr\[JPO] Języki programowania obiektowego\Tetris_game\Tetris\Debug\Tetris.exe
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(134,13): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(302,67): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(302,41): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(314,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(314,24): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(325,74): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(325,45): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+  Tetris.vcxproj -> C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Debug\Tetris.exe
