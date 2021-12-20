@@ -1,9 +1,9 @@
 ﻿  main.cpp
-C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(134,13): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(302,67): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(302,41): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(314,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(314,24): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(325,74): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
-C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(325,45): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(195,13): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(339,81): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(339,48): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(351,32): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(351,24): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(362,88): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Tetris\main.cpp(362,52): warning C4244: "argument": konwersja z "int" do "float", możliwa utrata danych
   Tetris.vcxproj -> C:\Users\Mariusz\Desktop\5 semestr\GIT_Repositories\Tetris-Game\Tetris\Debug\Tetris.exe
