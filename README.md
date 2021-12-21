@@ -1,2 +1,2 @@
 # Tetris-Game
-Tetris game, using SFML
+Tetris game, SFML
