@@ -107,18 +107,18 @@ int main()
 		/**********   END OF GAME MOMENT   **********/
 		if (tetris.end_game_check())
 		{
+			text.setCharacterSize(30);
+			text.setFillColor(sf::Color::Red);
+			text.setPosition(280, 300);
+			text.setString("GAME OVER !");
+			window.draw(text);
+			text.setCharacterSize(20);
+			text.setPosition(300, 330);
+			text.setString("press space");
+			window.draw(text);
+			window.display();
 			while (1)
 			{
-				text.setCharacterSize(30);
-				text.setFillColor(sf::Color::Red);
-				text.setPosition(280, 300);
-				text.setString("GAME OVER !");
-				window.draw(text);
-				text.setCharacterSize(20);
-				text.setPosition(300, 330);
-				text.setString("press space");
-				window.draw(text);
-				window.display();
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) // kiedy klikniemy escape zamykamy okno
 					window.close();
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) // kiedy klikniemy spacje nowa gra

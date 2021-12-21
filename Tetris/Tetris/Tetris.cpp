@@ -237,7 +237,7 @@ void Tetris::clear_row(int row)
 /**********  creates first figures for the first iteration of the program  **********/
 void Tetris::create_first_figures(void)
 {
-	m_color = 1 + rand() % 7; // rand color
+	m_color = 1 + rand() % 6; // rand color
 	m_fig = rand() % 7; // rand fig
 	for (int i = 0; i < 4; i++)
 	{
@@ -245,7 +245,7 @@ void Tetris::create_first_figures(void)
 		Point_position[i].y = figures[m_fig][i] / 2;
 	}
 
-	m_next_color = 1 + rand() % 7; // rand color
+	m_next_color = 1 + rand() % 6; // rand color
 	m_fig = rand() % 7; // rand fig
 	for (int i = 0; i < 4; i++)
 	{
@@ -262,7 +262,7 @@ void Tetris::create_next_figures(void)
 		game_area[Point_pos_temp[i].y][Point_pos_temp[i].x] = m_color;
 
 	m_color = m_next_color; // losowa liczba 1-7 bo tylko mamy dostepnych kolorow
-	m_next_color = 1 + rand() % 7; // losowy kolor dla nastepnej wyswietlanej figury
+	m_next_color = 1 + rand() % 6; // losowy kolor dla nastepnej wyswietlanej figury
 
 	m_fig = rand() % 7; // losowa liczba 0-6 bo tyle mamy wierszy w macierzy figur
 	for (int i = 0; i < 4; i++)
