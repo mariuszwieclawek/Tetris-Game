@@ -20,14 +20,14 @@ private:
 	int m_next_color; // a color drawn for the next figure
 	int m_fig; // a drawn figure
 
-	int game_area[X][Y]; // game of field, all figures 
+	int m_game_area[X][Y]; // game of field, all figures 
 
-	Point Point_position[4]; // indicates the current position of the point in the game area
-	Point Point_pos_temp[4]; // used for copying values from Point_Position
-	Point Point_next_figure[4]; // indicates the point at which the next figure is displayed
-	Point Centre; //indicates the center of the figure, used to rotating figures
+	Point m_Point_position[4]; // indicates the current position of the point in the game area
+	Point m_Point_pos_temp[4]; // used for copying values from Point_Position
+	Point m_Point_next_figure[4]; // indicates the point at which the next figure is displayed
+	Point m_Centre; //indicates the center of the figure, used to rotating figures
 
-	int figures[7][4]; // seven different figures
+	int m_figures[7][4]; // seven different figures
 
 public:
 	/**********  constructor  **********/
@@ -74,11 +74,8 @@ public:
 	/**********  deletes the specified row and moves the playing field one position  **********/
 	void clear_row(int row);
 
-	/**********  creates first figures for the first iteration of the program  **********/
-	void create_first_figures(void);
-
 	/**********  creates consecutive random shapes for the next iterations  **********/
-	void create_next_figures(void);
+	void create_figures(void);
 
 };
 

@@ -9,27 +9,6 @@
 /**********  constructor  **********/
 Tetris::Tetris(void)
 {
-	m_color = 0; 
-	m_next_color = 0; 
-	m_fig = 0; 
-
-	for (int i = 0; i < 4; i++)
-	{
-		Point_position[i].x = 0;
-		Point_position[i].y = 0;
-		Point_pos_temp[i].x = 0;
-		Point_pos_temp[i].y = 0;
-		Point_next_figure[i].x = 0;
-		Point_next_figure[i].y = 0;
-	}
-
-	Centre.x = 0;
-	Centre.y = 0;
-
-	for (int i = 0; i < X; i++)
-		for (int j = 0; j < Y; j++)
-			game_area[i][j] = 0;
-
 	int temp_figures[7][4] =
 	{
 			0,2,4,6, // |					0  1
@@ -42,7 +21,39 @@ Tetris::Tetris(void)
 	};
 	for (int i = 0; i < 7; i++)
 		for (int j = 0; j < 4; j++)
-			figures[i][j] = temp_figures[i][j];
+			m_figures[i][j] = temp_figures[i][j];
+
+
+	m_color = 1 + rand() % 6; // rand color
+	m_fig = rand() % 7; // rand fig
+	for (int i = 0; i < 4; i++)
+	{
+		m_Point_position[i].x = m_figures[m_fig][i] % 2; // kolumna 0 czy 1
+		m_Point_position[i].y = m_figures[m_fig][i] / 2;
+	}
+
+	m_next_color = 1 + rand() % 6; // rand color
+	m_fig = rand() % 7; // rand fig
+	for (int i = 0; i < 4; i++)
+	{
+		m_Point_next_figure[i].x = m_figures[m_fig][i] % 2; // kolumna 0 czy 1
+		m_Point_next_figure[i].y = m_figures[m_fig][i] / 2;
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		m_Point_pos_temp[i].x = 0;
+		m_Point_pos_temp[i].y = 0;
+	}
+
+	m_Centre.x = 0;
+	m_Centre.y = 0;
+
+	for (int i = 0; i < X; i++)
+		for (int j = 0; j < Y; j++)
+			m_game_area[i][j] = 0;
+
+	
 }
 
 /**********  getters and setters  **********/
@@ -61,7 +72,7 @@ Point* Tetris::get_Point_position(void)
 	Point_position_temp = new Point[4];
 
 	for (int i = 0; i < 4; i++)
-		Point_position_temp[i] = Point_position[i];
+		Point_position_temp[i] = m_Point_position[i];
 
 	return Point_position_temp;
 }
@@ -72,7 +83,7 @@ Point* Tetris::get_Point_next_figure(void)
 	Point_next_figure_temp = new Point[4];
 
 	for (int i = 0; i < 4; i++)
-		Point_next_figure_temp[i] = Point_next_figure[i];
+		Point_next_figure_temp[i] = m_Point_next_figure[i];
 
 	return Point_next_figure_temp;
 }
@@ -88,7 +99,7 @@ int** Tetris::get_game_area(void)
 
 		for (int j = 0; j < Y; j++)
 		{
-			game_area_temp[i][j] = game_area[i][j];
+			game_area_temp[i][j] = m_game_area[i][j];
 		}
 	}
 	return game_area_temp;
@@ -100,31 +111,31 @@ void Tetris::move_position(int x_position)
 {
 	for (int i = 0; i < 4; i++)
 	{
-		Point_pos_temp[i] = Point_position[i]; // copy
-		Point_position[i].x += x_position;
+		m_Point_pos_temp[i] = m_Point_position[i]; // copy
+		m_Point_position[i].x += x_position;
 	}
 	if (move_check())
-		for (int j = 0; j < 4; j++) Point_position[j] = Point_pos_temp[j];
+		for (int j = 0; j < 4; j++) m_Point_position[j] = m_Point_pos_temp[j];
 }
 
 
 /**********  ^ ROTATION ^ rotate the figure with the top arrow key **********/
 void Tetris::rotate_figure(void)
 {
-	for (int j = 0; j < 4; j++) Point_pos_temp[j] = Point_position[j]; // copy
+	for (int j = 0; j < 4; j++) m_Point_pos_temp[j] = m_Point_position[j]; // copy
 
-	Centre = Point_position[1]; //Centre of rotation
+	m_Centre = m_Point_position[1]; //Centre of rotation
 
 	for (int i = 0; i < 4; i++)
 	{
-		int x = Point_pos_temp[i].y - Centre.y;
-		int y = Point_pos_temp[i].x - Centre.x;
-		Point_pos_temp[i].x = Centre.x - x;
-		Point_pos_temp[i].y = Centre.y + y;
+		int x = m_Point_pos_temp[i].y - m_Centre.y;
+		int y = m_Point_pos_temp[i].x - m_Centre.x;
+		m_Point_pos_temp[i].x = m_Centre.x - x;
+		m_Point_pos_temp[i].y = m_Centre.y + y;
 	}
 
 	if (rotation_check())
-		for (int j = 0; j < 4; j++) Point_position[j] = Point_pos_temp[j];
+		for (int j = 0; j < 4; j++) m_Point_position[j] = m_Point_pos_temp[j];
 }
 
 
@@ -132,7 +143,7 @@ void Tetris::rotate_figure(void)
 void Tetris::fast_falling(void)
 {
 	for (int i = 0; i < 4; i++)
-		Point_position[i].y += 1;
+		m_Point_position[i].y += 1;
 }
 
 
@@ -141,9 +152,9 @@ bool Tetris::move_check()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (Point_position[i].x < 0 || Point_position[i].x > 10) //gdy punkt wyjdzie poza obszar gry
+		if (m_Point_position[i].x < 0 || m_Point_position[i].x > 10) //gdy punkt wyjdzie poza obszar gry
 			return 1;
-		else if (game_area[Point_position[i].y][Point_position[i].x]) // kiedy zetknie się z inna figura
+		else if (m_game_area[m_Point_position[i].y][m_Point_position[i].x]) // kiedy zetknie się z inna figura
 			return 1;
 	}
 	return 0;
@@ -155,9 +166,9 @@ bool Tetris::rotation_check()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (Point_pos_temp[i].x < 0 || Point_pos_temp[i].x > 10) //gdy punkt wyjdzie poza obszar gry
+		if (m_Point_pos_temp[i].x < 0 || m_Point_pos_temp[i].x > 10) //gdy punkt wyjdzie poza obszar gry
 			return 0;
-		else if (game_area[Point_pos_temp[i].y][Point_pos_temp[i].x]) // kiedy zetknie się z inna figura
+		else if (m_game_area[m_Point_pos_temp[i].y][m_Point_pos_temp[i].x]) // kiedy zetknie się z inna figura
 			return 0;
 	}
 	return 1;
@@ -169,9 +180,9 @@ bool Tetris::point_in_free_area()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (game_area[Point_position[i].y][Point_position[i].x]) // kiedy zetknie się z inna figura
+		if (m_game_area[m_Point_position[i].y][m_Point_position[i].x]) // kiedy zetknie się z inna figura
 			return 1;
-		else if (Point_position[i].y > (X - 1)) // kiedy figura zejdzie na sam dół
+		else if (m_Point_position[i].y > (X - 1)) // kiedy figura zejdzie na sam dół
 			return 1;
 	}
 	return 0;
@@ -183,7 +194,7 @@ bool Tetris::end_game_check()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (Point_position[i].y == 0 && (game_area[Point_position[i].y][Point_position[i].x] > 0)) // kiedy bedzie figura bedzie u samej gory i zetknie sie z inna figura
+		if (m_Point_position[i].y == 0 && (m_game_area[m_Point_position[i].y][m_Point_position[i].x] > 0)) // kiedy bedzie figura bedzie u samej gory i zetknie sie z inna figura
 			return 1;
 	}
 	return 0;
@@ -195,7 +206,7 @@ void Tetris::clear_game_area(void)
 {
 	for (int i = 0; i < X; i++)
 		for (int j = 0; j < Y; j++)
-			game_area[i][j] = 0;
+			m_game_area[i][j] = 0;
 }
 
 
@@ -208,7 +219,7 @@ int Tetris::which_row_is_full()
 
 		for (int j = 0; j < Y; j++)
 		{
-			if (game_area[i][j] == 0) // jezeli nie ma klocka to wyjdz z wiersza i nie zliczaj
+			if (m_game_area[i][j] == 0) // jezeli nie ma klocka to wyjdz z wiersza i nie zliczaj
 				break;
 			temp++;
 		}
@@ -224,42 +235,21 @@ int Tetris::which_row_is_full()
 void Tetris::clear_row(int row)
 {
 	for (int k = 0; k < Y; k++)
-		game_area[row][k] = 0; // remove the values ​​from the row
+		m_game_area[row][k] = 0; // remove the values ​​from the row
 
 	for (int k = row; k > 4; k--) // the whole array of values, counting upwards from the row we deleted, we move one position
 	{
 		for (int j = 0; j < Y; j++)
-			game_area[k][j] = game_area[k - 1][j];
-	}
-}
-
-
-/**********  creates first figures for the first iteration of the program  **********/
-void Tetris::create_first_figures(void)
-{
-	m_color = 1 + rand() % 6; // rand color
-	m_fig = rand() % 7; // rand fig
-	for (int i = 0; i < 4; i++)
-	{
-		Point_position[i].x = figures[m_fig][i] % 2; // kolumna 0 czy 1
-		Point_position[i].y = figures[m_fig][i] / 2;
-	}
-
-	m_next_color = 1 + rand() % 6; // rand color
-	m_fig = rand() % 7; // rand fig
-	for (int i = 0; i < 4; i++)
-	{
-		Point_next_figure[i].x = figures[m_fig][i] % 2; // kolumna 0 czy 1
-		Point_next_figure[i].y = figures[m_fig][i] / 2;
+			m_game_area[k][j] = m_game_area[k - 1][j];
 	}
 }
 
 
 /**********  creates consecutive random shapes for the next iterations  **********/
-void Tetris::create_next_figures(void)
+void Tetris::create_figures(void)
 {
 	for (int i = 0; i < 4; i++)
-		game_area[Point_pos_temp[i].y][Point_pos_temp[i].x] = m_color;
+		m_game_area[m_Point_pos_temp[i].y][m_Point_pos_temp[i].x] = m_color;
 
 	m_color = m_next_color; // losowa liczba 1-7 bo tylko mamy dostepnych kolorow
 	m_next_color = 1 + rand() % 6; // losowy kolor dla nastepnej wyswietlanej figury
@@ -267,14 +257,14 @@ void Tetris::create_next_figures(void)
 	m_fig = rand() % 7; // losowa liczba 0-6 bo tyle mamy wierszy w macierzy figur
 	for (int i = 0; i < 4; i++)
 	{
-		Point_position[i].x = Point_next_figure[i].x; // kolumna 0 czy 1
-		Point_position[i].y = Point_next_figure[i].y;
+		m_Point_position[i].x = m_Point_next_figure[i].x; // kolumna 0 czy 1
+		m_Point_position[i].y = m_Point_next_figure[i].y;
 	}
 
 	m_fig = rand() % 7; // losowa liczba 0-6 bo tyle mamy wierszy w macierzy figur
 	for (int i = 0; i < 4; i++)
 	{
-		Point_next_figure[i].x = figures[m_fig][i] % 2; // kolumna 0 czy 1
-		Point_next_figure[i].y = figures[m_fig][i] / 2;
+		m_Point_next_figure[i].x = m_figures[m_fig][i] % 2; // kolumna 0 czy 1
+		m_Point_next_figure[i].y = m_figures[m_fig][i] / 2;
 	}
 }

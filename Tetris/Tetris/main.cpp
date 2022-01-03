@@ -18,7 +18,6 @@ int main()
 	float timer = 0; //do zliczania czasu
 	double delay = 0.3; //szybkosc opadania
 	int full_row; //ktory wiersz zostal zapelniony w calosci
-	int first_iteration = 1; // dla pierwszej iteracji aby zainicjalizowac zmienne 
 
 	sf::RenderWindow window(sf::VideoMode(460, 396), "Tetris game");
 
@@ -93,15 +92,9 @@ int main()
 
 
 		/**********   CREATE RANDOM FIGURE  **********/
-			// Init values when the programs starts
-		if (first_iteration)
-		{
-			tetris.create_first_figures();
-			first_iteration = 0;
-		}
 		// Create next figures and control if the figure is in free game area
 		if (tetris.point_in_free_area())
-			tetris.create_next_figures();
+			tetris.create_figures();
 
 
 		/**********   END OF GAME MOMENT   **********/
