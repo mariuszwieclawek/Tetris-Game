@@ -28,7 +28,7 @@ Tetris::Tetris(void)
 	m_fig = rand() % 7; // rand fig
 	for (int i = 0; i < 4; i++)
 	{
-		m_Point_position[i].x = m_figures[m_fig][i] % 2; // kolumna 0 czy 1
+		m_Point_position[i].x = (m_figures[m_fig][i] % 2) + 4; // kolumna 0 czy 1
 		m_Point_position[i].y = m_figures[m_fig][i] / 2;
 	}
 
@@ -105,6 +105,32 @@ int** Tetris::get_game_area(void)
 	return game_area_temp;
 }
 
+/**********  check if it is possible to move the figure  **********/
+bool Tetris::move_check()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (m_Point_position[i].x < 0 || m_Point_position[i].x > 10) //gdy punkt wyjdzie poza obszar gry
+			return 1;
+		else if (m_game_area[m_Point_position[i].y][m_Point_position[i].x]) // kiedy zetknie się z inna figura
+			return 1;
+	}
+	return 0;
+}
+
+
+/**********  check if it is possible to rotate the figure  **********/
+bool Tetris::rotation_check()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (m_Point_pos_temp[i].x < 0 || m_Point_pos_temp[i].x > 10) //gdy punkt wyjdzie poza obszar gry
+			return 0;
+		else if (m_game_area[m_Point_pos_temp[i].y][m_Point_pos_temp[i].x]) // kiedy zetknie się z inna figura
+			return 0;
+	}
+	return 1;
+}
 
 /**********  <- MOVING -> control a figure left or right with the arrow keys  **********/
 void Tetris::move_position(int x_position)
@@ -146,33 +172,6 @@ void Tetris::fast_falling(void)
 		m_Point_position[i].y += 1;
 }
 
-
-/**********  check if it is possible to move the figure  **********/
-bool Tetris::move_check()
-{
-	for (int i = 0; i < 4; i++)
-	{
-		if (m_Point_position[i].x < 0 || m_Point_position[i].x > 10) //gdy punkt wyjdzie poza obszar gry
-			return 1;
-		else if (m_game_area[m_Point_position[i].y][m_Point_position[i].x]) // kiedy zetknie się z inna figura
-			return 1;
-	}
-	return 0;
-}
-
-
-/**********  check if it is possible to rotate the figure  **********/
-bool Tetris::rotation_check()
-{
-	for (int i = 0; i < 4; i++)
-	{
-		if (m_Point_pos_temp[i].x < 0 || m_Point_pos_temp[i].x > 10) //gdy punkt wyjdzie poza obszar gry
-			return 0;
-		else if (m_game_area[m_Point_pos_temp[i].y][m_Point_pos_temp[i].x]) // kiedy zetknie się z inna figura
-			return 0;
-	}
-	return 1;
-}
 
 
 /**********  check if the figure can move down or must stop  **********/
@@ -257,14 +256,14 @@ void Tetris::create_figures(void)
 	m_fig = rand() % 7; // losowa liczba 0-6 bo tyle mamy wierszy w macierzy figur
 	for (int i = 0; i < 4; i++)
 	{
-		m_Point_position[i].x = m_Point_next_figure[i].x; // kolumna 0 czy 1
+		m_Point_position[i].x = m_Point_next_figure[i].x +4; // kolumna 0 czy 1
 		m_Point_position[i].y = m_Point_next_figure[i].y;
 	}
 
 	m_fig = rand() % 7; // losowa liczba 0-6 bo tyle mamy wierszy w macierzy figur
 	for (int i = 0; i < 4; i++)
 	{
-		m_Point_next_figure[i].x = m_figures[m_fig][i] % 2; // kolumna 0 czy 1
-		m_Point_next_figure[i].y = m_figures[m_fig][i] / 2;
+		m_Point_next_figure[i].x = (m_figures[m_fig][i] % 2); // kolumna 0 czy 1
+		m_Point_next_figure[i].y = (m_figures[m_fig][i] / 2);
 	}
 }

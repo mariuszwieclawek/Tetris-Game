@@ -10,9 +10,7 @@ struct Point // a structure containing the coordinates of a point
 	int x, y;
 };
 
-////////////////////////////////////////////
 // CLASS TETRIS 
-////////////////////////////////////////////
 class Tetris
 {
 private:
@@ -44,6 +42,12 @@ public:
 	Point* get_Point_next_figure(void);
 	int** get_game_area(void);
 
+	/**********  check if it is possible to move the figure  **********/
+	bool move_check();
+
+	/**********  check if it is possible to rotate the figure  **********/
+	bool rotation_check();
+
 	/**********  <- MOVING -> control a figure left or right with the arrow keys  **********/
 	void move_position(int x_position);
 
@@ -52,12 +56,6 @@ public:
 
 	/**********  v FASTER FALLING v faster figure fall with the low arrow key **********/
 	void fast_falling(void);
-
-	/**********  check if it is possible to move the figure  **********/
-	bool move_check();
-
-	/**********  check if it is possible to rotate the figure  **********/
-	bool rotation_check();
 
 	/**********  check if the figure can move down or must stop  **********/
 	bool point_in_free_area();
