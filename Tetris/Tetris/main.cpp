@@ -11,13 +11,13 @@ int main()
 {
 	Tetris tetris;
 
-	bool rotate = 0; // do obracania figura
-	int x_position = 0; // do sterowania strzalkami 
-	int score = 0; // Aktualny wynik
-	int best_score = 0; // Najlepszy wynik
-	float timer = 0; //do zliczania czasu
-	double delay = 0.3; //szybkosc opadania
-	int full_row; //ktory wiersz zostal zapelniony w calosci
+	bool rotate = 0; // for figure rotating
+	int x_position = 0; // to control the arrows
+	int score = 0; // actually score
+	int best_score = 0; // the best score
+	float timer = 0; // for time counting
+	double delay = 0.3; // speed of falling
+	int full_row; // which row is full
 
 	sf::RenderWindow window(sf::VideoMode(460, 396), "Tetris game");
 
@@ -44,7 +44,7 @@ int main()
 	while (window.isOpen())
 	{
 		srand((unsigned int)time(NULL));
-		float time = clock.getElapsedTime().asSeconds(); // zwraca czas w sekundach od ostatniego momentu uzycia clock.restart()
+		float time = clock.getElapsedTime().asSeconds(); // returns the time in seconds since the last time it was used clock.restart()
 		clock.restart();
 		timer += time;
 
@@ -79,7 +79,7 @@ int main()
 		if (timer > delay)
 		{
 			tetris.fast_falling();
-			timer = 0; // zerujemy timer
+			timer = 0; // reset the timer
 		}
 
 
@@ -87,7 +87,7 @@ int main()
 		if (full_row = tetris.which_row_is_full())
 		{
 			score++; // aktualny wynik	
-			tetris.clear_row(full_row); // usuwamy wiersz ktory sie zapelnil i przesuwamy obszar gry o jedna pozycje wzgledem usunietego wiersza
+			tetris.clear_row(full_row); // delete the filled row and move the game area one position relative to the deleted row
 		}
 
 
@@ -112,12 +112,12 @@ int main()
 			window.display();
 			while (1)
 			{
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) // kiedy klikniemy escape zamykamy okno
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) // when we click escape we close the window
 					window.close();
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) // kiedy klikniemy spacje nowa gra
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) // when whe click space start new game
 				{
-					tetris.clear_game_area(); // czyscimy zawartosc obszaru gry
-					if (score > best_score) // sprawdzamy czy to najlepszy wynik
+					tetris.clear_game_area(); // clean game area
+					if (score > best_score) // check if it is the best score
 						best_score = score;
 					score = 0;
 					break;
@@ -139,7 +139,7 @@ int main()
 		{
 			spr1.setTextureRect(sf::IntRect(tetris.get_color() * 18, 0, 18, 18));
 			spr1.setPosition(float(Point_position[i].x * 18), float(Point_position[i].y * 18));
-			spr1.move(18, 18); // przesuwanie obiektu względem jego aktualnej pozycji x // zeby dopasowac do tla
+			spr1.move(18, 18); // move the object relative to its current position x // to match the background
 			window.draw(spr1);
 		}
 
@@ -149,10 +149,10 @@ int main()
 		{
 			for (int j = 0; j < Y; j++)
 			{
-				if (game_area[i][j] == 0) continue; // kiedy niewypelnilismy pola zadna figura to pomin
-				spr1.setTextureRect(sf::IntRect(game_area[i][j] * 18, 0, 18, 18)); // wycina kawalek z calej tekstury 
-				spr1.setPosition(float(j * 18), float(i * 18)); // sprajt zostanie umieszczony na pozycji x,y
-				spr1.move(18, 18); // przesuwanie obiektu względem jego aktualnej pozycji x // zeby dopasowac do tla
+				if (game_area[i][j] == 0) continue; // when we have not filled the field no one figure, omit
+				spr1.setTextureRect(sf::IntRect(game_area[i][j] * 18, 0, 18, 18)); // cuts a chunk out of the whole texture
+				spr1.setPosition(float(j * 18), float(i * 18)); // the sprite will be placed at the x, y position
+				spr1.move(18, 18);
 				window.draw(spr1);
 			}
 		}
@@ -163,7 +163,7 @@ int main()
 		{
 			spr1.setTextureRect(sf::IntRect(tetris.get_next_color() * 18, 0, 18, 18));
 			spr1.setPosition(float(Point_next_figure[i].x * 18), float(Point_next_figure[i].y * 18));
-			spr1.move(328, 58); // przesuwanie obiektu względem jego aktualnej pozycji x // zeby dopasowac do tla
+			spr1.move(328, 58);
 			window.draw(spr1);
 		}
 
@@ -197,9 +197,9 @@ int main()
 
 		/**********   DISPLAY ALL AND RESET VARIABLES   **********/
 		window.display();
-		x_position = 0; // musimy wyzerowac wartosc kiedy juz ustawilismy pozycje sprite 
-		delay = 0.3; // powrot do standardowego czasu opadania
-		rotate = 0; // skasuj rotacje
+		x_position = 0;  
+		delay = 0.3; 
+		rotate = 0; 
 
 
 		/**********   CLEAN MEMORY   **********/

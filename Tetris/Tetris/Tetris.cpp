@@ -28,7 +28,7 @@ Tetris::Tetris(void)
 	m_fig = rand() % 7; // rand fig
 	for (int i = 0; i < 4; i++)
 	{
-		m_Point_position[i].x = (m_figures[m_fig][i] % 2) + 4; // kolumna 0 czy 1
+		m_Point_position[i].x = (m_figures[m_fig][i] % 2) + 4; // which column 0/1
 		m_Point_position[i].y = m_figures[m_fig][i] / 2;
 	}
 
@@ -36,7 +36,7 @@ Tetris::Tetris(void)
 	m_fig = rand() % 7; // rand fig
 	for (int i = 0; i < 4; i++)
 	{
-		m_Point_next_figure[i].x = m_figures[m_fig][i] % 2; // kolumna 0 czy 1
+		m_Point_next_figure[i].x = m_figures[m_fig][i] % 2; // which column 0/1
 		m_Point_next_figure[i].y = m_figures[m_fig][i] / 2;
 	}
 
@@ -110,9 +110,9 @@ bool Tetris::move_check()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (m_Point_position[i].x < 0 || m_Point_position[i].x > 10) //gdy punkt wyjdzie poza obszar gry
+		if (m_Point_position[i].x < 0 || m_Point_position[i].x > 10) //when the point goes out of the play area
 			return 1;
-		else if (m_game_area[m_Point_position[i].y][m_Point_position[i].x]) // kiedy zetknie się z inna figura
+		else if (m_game_area[m_Point_position[i].y][m_Point_position[i].x]) // when it comes into contact with another figure
 			return 1;
 	}
 	return 0;
@@ -124,9 +124,9 @@ bool Tetris::rotation_check()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (m_Point_pos_temp[i].x < 0 || m_Point_pos_temp[i].x > 10) //gdy punkt wyjdzie poza obszar gry
+		if (m_Point_pos_temp[i].x < 0 || m_Point_pos_temp[i].x > 10) // when the point goes out of the play area
 			return 0;
-		else if (m_game_area[m_Point_pos_temp[i].y][m_Point_pos_temp[i].x]) // kiedy zetknie się z inna figura
+		else if (m_game_area[m_Point_pos_temp[i].y][m_Point_pos_temp[i].x]) // when it comes into contact with another figure
 			return 0;
 	}
 	return 1;
@@ -179,9 +179,9 @@ bool Tetris::point_in_free_area()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (m_game_area[m_Point_position[i].y][m_Point_position[i].x]) // kiedy zetknie się z inna figura
+		if (m_game_area[m_Point_position[i].y][m_Point_position[i].x]) // when it comes into contact with another figure
 			return 1;
-		else if (m_Point_position[i].y > (X - 1)) // kiedy figura zejdzie na sam dół
+		else if (m_Point_position[i].y > (X - 1)) // when the figure goes all the way down
 			return 1;
 	}
 	return 0;
@@ -193,7 +193,7 @@ bool Tetris::end_game_check()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (m_Point_position[i].y == 0 && (m_game_area[m_Point_position[i].y][m_Point_position[i].x] > 0)) // kiedy bedzie figura bedzie u samej gory i zetknie sie z inna figura
+		if (m_Point_position[i].y == 0 && (m_game_area[m_Point_position[i].y][m_Point_position[i].x] > 0)) // when there will be a figure at the top and it will touch another figure
 			return 1;
 	}
 	return 0;
@@ -250,20 +250,20 @@ void Tetris::create_figures(void)
 	for (int i = 0; i < 4; i++)
 		m_game_area[m_Point_pos_temp[i].y][m_Point_pos_temp[i].x] = m_color;
 
-	m_color = m_next_color; // losowa liczba 1-7 bo tylko mamy dostepnych kolorow
-	m_next_color = 1 + rand() % 6; // losowy kolor dla nastepnej wyswietlanej figury
+	m_color = m_next_color; // random number 1-7 colors available
+	m_next_color = 1 + rand() % 6; // a random color for the next displayed figure
 
-	m_fig = rand() % 7; // losowa liczba 0-6 bo tyle mamy wierszy w macierzy figur
+	m_fig = rand() % 7; // random number 0-6 because this is the number of rows in the matrix of figures
 	for (int i = 0; i < 4; i++)
 	{
-		m_Point_position[i].x = m_Point_next_figure[i].x +4; // kolumna 0 czy 1
+		m_Point_position[i].x = m_Point_next_figure[i].x +4; // which column 0/1
 		m_Point_position[i].y = m_Point_next_figure[i].y;
 	}
 
-	m_fig = rand() % 7; // losowa liczba 0-6 bo tyle mamy wierszy w macierzy figur
+	m_fig = rand() % 7; // random number 0-6 because this is the number of rows in the matrix of figures
 	for (int i = 0; i < 4; i++)
 	{
-		m_Point_next_figure[i].x = (m_figures[m_fig][i] % 2); // kolumna 0 czy 1
+		m_Point_next_figure[i].x = (m_figures[m_fig][i] % 2);
 		m_Point_next_figure[i].y = (m_figures[m_fig][i] / 2);
 	}
 }
