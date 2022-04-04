@@ -8,8 +8,9 @@ hole. The game ends when the pieces touch the top of the play area.
 # Documentation
 [documentation.pdf](https://github.com/mariuszwieclawek/Tetris-Game/files/8410216/documentation.pdf)
 
-# How it worsk:
+# How it works:
 ![image](https://user-images.githubusercontent.com/57256517/161565647-9fd5cbc8-9a09-42fb-9a79-3abf8b148ee0.png)
+
 When we start the program, the game starts. The program generates random figures (consisting of 4
 blocks / squares) in a random color. We control them with the use of left-right arrows. When we want
 to rotate a given figure, click the up arrow, we can rotate only when it is possible, i.e.
